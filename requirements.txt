@@ -1,0 +1,31 @@
+# 核心数据处理
+pandas>=2.0.0
+numpy>=1.24.0
+
+# 数据集加载
+datasets>=2.14.0
+
+# Embedding 和 向量检索
+sentence-transformers>=2.2.0
+faiss-cpu>=1.7.4
+
+# LLM 调用
+aiohttp>=3.8.0
+tenacity>=8.2.0
+openai>=1.0.0
+
+# 环境变量
+python-dotenv>=1.0.0
+
+# 进度条
+tqdm>=4.65.0
+
+# 可视化（EDA用）
+plotly>=5.14.0
+matplotlib>=3.7.0
+
+# 前端
+streamlit>=1.28.0
+
+# SQL Server 支持（可选）
+pyodbc>=4.0.39
