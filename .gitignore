@@ -25,9 +25,9 @@ env/
 .DS_Store
 Thumbs.db
 
-# 数据文件（大文件）
-data/*.faiss
-data/**/*.parquet
+# 运行时生成的数据库（大文件/敏感）
+data/*.db
+data/**/*.db
 
 # 缓存
 src/cache/*.db
