@@ -219,16 +219,6 @@ def run_pipeline(question, k, api_key=None, base_url=None, model=None,
         st.caption("✅ 模拟执行完毕！")
         status.update(label="✅ 模拟执行完毕！", state="complete", expanded=False)
 
-    # 下载按钮放在 status 块外面，确保始终可见
-    if results is not None:
-        csv = results.to_csv(index=False).encode('utf-8')
-        st.download_button(
-            label="📥 下载完整结果 (CSV)",
-            data=csv,
-            file_name=f"simulation_{query_id}.csv",
-            mime="text/csv",
-        )
-
     return results
 
 
@@ -414,24 +404,24 @@ with tab1:
         df = st.session_state["results_df"]
         q = st.session_state.get("question", "未知问题")
         render_question_card(q)
-        render_charts(df)
         st.download_button(
             label="📥 下载完整结果 (CSV)",
             data=df.to_csv(index=False).encode('utf-8'),
             file_name=f"simulation_{q[:30]}.csv",
             mime="text/csv",
         )
+        render_charts(df)
     elif has_history:
         df = st.session_state["history_df"]
         q = st.session_state.get("history_question", "未知问题")
         render_question_card(q)
-        render_charts(df)
         st.download_button(
             label="📥 下载完整结果 (CSV)",
             data=df.to_csv(index=False).encode('utf-8'),
             file_name=f"simulation_{q[:30]}.csv",
             mime="text/csv",
         )
+        render_charts(df)
 
 # ── Tab 2: 个体回答详情 ──
 with tab2:
