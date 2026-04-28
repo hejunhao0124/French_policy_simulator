@@ -1,5 +1,10 @@
 """
-Prompt 模板模块
+Prompt 模板模块（优化版）
+
+改进：
+1. 更清晰的指令，移除「避免中立」与「理性客观」的矛盾
+2. 增强 few-shot 示例，帮助 LLM 理解输出格式
+3. 明确引导 LLM 基于人物背景表达有依据的倾向
 """
 
 
@@ -13,7 +18,7 @@ def _get(persona, key):
 
 def build_prompt(persona, question):
     """
-    构建 Prompt
+    构建 Prompt — 让 LLM 扮演一位法国公民并回答政策问题
 
     参数:
         persona: 人物画像字典
@@ -82,21 +87,29 @@ def build_prompt(persona, question):
         persona_parts.append(f"【{section_name}】\n{section_content}")
     persona_text = "\n\n".join(persona_parts)
 
-    prompt = f"""你是一位法国公民，请根据人物画像回答政策问题。
+    prompt = f"""你是一位法国公民。请根据你的个人画像，回答以下政策问题。请结合你的社会背景（职业、学历、地区）和价值观，表达真实、自然的个人看法，并明确给出你的支持程度。
 
 {persona_text}
 
-【问题】{question}
+【政策问题】
+{question}
 
-【要求】
-1. 第一人称"我"视角
-2. 用中文，简短精炼准确
-3. 结合自身画像，真实自然
-4. 尽量避免中立回答，应表达明确倾向（支持或反对）
-5. 避免过度极端语气，理性客观
-6. 结尾标注：支持度：X/10（0-10分）
+【回答要求】
+1. 使用第一人称「我」的视角
+2. 语言：中文，简洁精炼（100-200字以内）
+3. 必须结合你的人物画像来阐述理由（不要泛泛而谈）
+4. 明确表达你的态度倾向，给出有依据的判断
+5. 回答末尾必须标注：支持度：X/10（X 为 0 到 10 的整数，0=强烈反对，5=无所谓，10=强烈支持）
 
-示例：作为一名45岁男性工人，我认为...支持度：3/10"""
+【示例1 - 反对倾向】
+我今年 52 岁，是北部省的一名工厂工人，学历只有职业证书。退休年龄推迟对我来说就是雪上加霜——我的工作对体力要求很高，每天腰酸背痛。我觉得政府应该考虑不同职业的差异性，而不是一刀切地延长所有人的工作年限。
+支持度：2/10
+
+【示例2 - 支持倾向】
+我今年 35 岁，是巴黎的一名软件工程师，硕士学历。我认为推迟退休年龄在人口老龄化背景下是合理的——法国的养老金体系需要可持续。而且我的工作性质决定了即使到 64 岁我也能胜任。不过政府应该将省下的养老金用于改善医疗和养老设施。
+支持度：8/10
+
+现在，请以你的人物身份回答："""
 
     return prompt
 
@@ -110,7 +123,7 @@ def build_batch_prompts(personas, question):
         question: 用户问题
 
     返回:
-        list: 每个元素包含 persona_id 和 prompt
+        list[dict]: 每个元素包含 persona_id 和 prompt
     """
     prompts = []
     for persona in personas:
@@ -118,6 +131,6 @@ def build_batch_prompts(personas, question):
         prompt = build_prompt(persona, question)
         prompts.append({
             "persona_id": persona_id,
-            "prompt": prompt
+            "prompt": prompt,
         })
     return prompts
