@@ -404,9 +404,11 @@ with tab1:
         df = st.session_state["results_df"]
         q = st.session_state.get("question", "未知问题")
         render_question_card(q)
+        # 添加 UTF-8 BOM，确保 Windows Excel 能正确识别中文编码
+        csv_data = "\ufeff" + df.to_csv(index=False)
         st.download_button(
             label="📥 下载完整结果 (CSV)",
-            data=df.to_csv(index=False).encode('utf-8'),
+            data=csv_data.encode('utf-8-sig'),
             file_name=f"simulation_{q[:30]}.csv",
             mime="text/csv",
         )
@@ -415,9 +417,10 @@ with tab1:
         df = st.session_state["history_df"]
         q = st.session_state.get("history_question", "未知问题")
         render_question_card(q)
+        csv_data = "\ufeff" + df.to_csv(index=False)
         st.download_button(
             label="📥 下载完整结果 (CSV)",
-            data=df.to_csv(index=False).encode('utf-8'),
+            data=csv_data.encode('utf-8-sig'),
             file_name=f"simulation_{q[:30]}.csv",
             mime="text/csv",
         )
