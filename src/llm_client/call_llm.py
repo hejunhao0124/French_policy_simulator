@@ -188,7 +188,7 @@ class LLMClient:
                 response = await self.async_client.chat.completions.create(
                     model=self.model,
                     messages=[{"role": "user", "content": prompt}],
-                    max_tokens=300,
+                    max_tokens=500,
                     temperature=self.temperature,
                 )
                 result = response.choices[0].message.content.strip()
@@ -334,7 +334,7 @@ class LLMClient:
             response = self.client.chat.completions.create(
                 model=self.model,
                 messages=[{"role": "user", "content": prompt}],
-                max_tokens=300,
+                max_tokens=500,
                 temperature=self.temperature,
             )
             result = response.choices[0].message.content.strip()
@@ -354,7 +354,7 @@ class LLMClient:
             response = self.client.chat.completions.create(
                 model=self.model,
                 messages=[{"role": "user", "content": prompt}],
-                max_tokens=300,
+                max_tokens=500,
                 temperature=self.temperature,
             )
             result = response.choices[0].message.content.strip()
