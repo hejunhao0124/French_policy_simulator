@@ -20,7 +20,7 @@ import time
 import traceback
 from typing import List, Dict, Any
 
-from openai import AsyncOpenAI, OpenAI
+from openai import AsyncOpenAI, OpenAI, RateLimitError
 from tenacity import retry, stop_after_attempt, wait_exponential
 
 logger = logging.getLogger(__name__)
@@ -188,7 +188,7 @@ class LLMClient:
                 response = await self.async_client.chat.completions.create(
                     model=self.model,
                     messages=[{"role": "user", "content": prompt}],
-                    max_tokens=300,
+                    max_tokens=800,
                     temperature=self.temperature,
                 )
                 result = response.choices[0].message.content.strip()
@@ -334,7 +334,7 @@ class LLMClient:
             response = self.client.chat.completions.create(
                 model=self.model,
                 messages=[{"role": "user", "content": prompt}],
-                max_tokens=300,
+                max_tokens=800,
                 temperature=self.temperature,
             )
             result = response.choices[0].message.content.strip()
@@ -354,7 +354,7 @@ class LLMClient:
             response = self.client.chat.completions.create(
                 model=self.model,
                 messages=[{"role": "user", "content": prompt}],
-                max_tokens=300,
+                max_tokens=800,
                 temperature=self.temperature,
             )
             result = response.choices[0].message.content.strip()
