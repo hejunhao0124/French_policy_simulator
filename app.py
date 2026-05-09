@@ -70,7 +70,9 @@ def load_data_cache():
                                 "data", "processed", "df_full.parquet")
     if os.path.exists(parquet_path):
         return pd.read_parquet(parquet_path, dtype_backend='pyarrow', engine='pyarrow')
-    return pd.read_csv(Config.DATA_PATH, low_memory=False, engine="pyarrow")
+    if Config.DATA_PATH.endswith('.parquet'):
+        return pd.read_parquet(Config.DATA_PATH)
+    return pd.read_csv(Config.DATA_PATH, low_memory=False)
 
 
 @st.cache_resource
